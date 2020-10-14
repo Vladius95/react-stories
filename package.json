@@ -1,0 +1,39 @@
+{
+  "name": "pointer_path",
+  "version": "1.0.0",
+  "description": "",
+  "scripts": {
+    "start": "parcel src/index.html --open"
+  },
+  "author": "thisboxforworkismine@gmail.com",
+  "license": "ISC",
+  "devDependencies": {
+    "@types/node": "^12.12.21",
+    "@types/react": "^16.9.16",
+    "@types/react-dom": "^16.9.4",
+    "eslint": "^6.6.0",
+    "eslint-config-prettier": "^6.5.0",
+    "eslint-plugin-import": "^2.18.2",
+    "eslint-plugin-jsx-a11y": "^6.2.3",
+    "eslint-plugin-prettier": "^3.1.1",
+    "eslint-plugin-react": "^7.16.0",
+    "eslint-plugin-react-hooks": "^2.2.0",
+    "eslint-plugin-typescript": "^0.14.0",
+    "parcel-bundler": "^1.12.4",
+    "prettier": "^1.19.1",
+    "tslint": "5.11.0",
+    "tslint-config-airbnb": "5.4.2",
+    "tslint-no-circular-imports": "0.5.0",
+    "tslint-react": "3.6.0",
+    "tslint-react-a11y": "1.0.0",
+    "typescript": "^3.8.3"
+  },
+  "dependencies": {
+    "decko": "^1.2.0",
+    "react": "^16.12.0",
+    "react-dom": "^16.12.0"
+  },
+  "alias": {
+    "src": "./src"
+  }
+}
