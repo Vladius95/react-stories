@@ -1,43 +1,9 @@
 import * as React from "react"
 import { Story } from "./@types/story"
-import { useStopwatch } from "./hooks/useStopwatch"
-import { UserStatsBottomBar } from "./presets/bottom-bars/UserStatsBottomBar/UserStatsBottomBar"
-import { StoriesHeader } from "./presets/headers/ProgressBar/StoryHeader"
-import { StoriesBody } from "./Story/Story"
-import { useStoryControls } from "./Story/useStory"
-import { StoryFeed } from "./StoryFeed/StoryFeed"
+import { Stories } from "./Story/Story"
+
 import { StoryPreviewProps } from "./StoryPreview/StoryPreview"
 import { calcProgress } from "./utils/calc-progress"
-
-const yepyConfig: StoryPreviewProps[] = [
-  {
-    // title: "Story with title and img",
-    style: {
-      backgroundColor: "#4B246A",
-      color: "white",
-    },
-    frameStroke: "#4B246A",
-    side: 88,
-  },
-  {
-    // title: "Another text, id",
-    style: {
-      backgroundColor: "#BB60C3",
-      color: "white",
-    },
-    frameStroke: "#BB60C3",
-    side: 88,
-  },
-  {
-    // title: "Weekly expenses",
-    style: {
-      backgroundColor: "#8386FF",
-      color: "white",
-    },
-    frameStroke: "#8386FF",
-    side: 88,
-  },
-]
 
 const yepyStories: Story[] = [
   {
@@ -78,80 +44,10 @@ const yepyStories: Story[] = [
   },
 ]
 
-// export function Page() {
-//   return (
-//     <div>
-//       <h1> React Swipeable Stories</h1>
-//       <StoryFeed stories={yepyConfig} />
-//       <div style={{ width: "100%", display: "flex", justifyContent: "center" }}>
-//         <Stories stories={yepyStories} storyId={0} onClose={console.log} size={{ width: "350px", height: "711px" }} />
-//       </div>
-//     </div>
-//   );
-// }
-
-export function CustomStory() {
-  const {
-    storySlide,
-    index,
-    incrementStory,
-    decrementStory,
-    onNextStory,
-    onPrevStory,
-  } = useStoryControls({
-    stories: yepyStories,
-    startIndex: 0,
-  })
-  //const autostart = React.useRef(storySlide.value.autostart || true);
-  const [duration, setDuration] = React.useState(storySlide.duration || 0)
-
-  const { tick, onStart, onPause, onResume, onReset } = useStopwatch({
-    time: duration,
-    onEnd: () => {
-      onReset()
-      // _onStoryEnd();
-      incrementStory()
-    },
-    interval: 100,
-  })
-
-  const _onSourceLoad = React.useCallback(
-    time => {
-      time && setDuration(time)
-      const dur = time || duration
-
-      // если есть время начинает отсчет
-      // dur !== 0 && onStart()
-    },
-    [duration]
-  )
-
+export function CustomStories() {
   return (
     <div style={{ width: "100%", display: "flex", justifyContent: "center" }}>
-      <StoriesBody
-        storySlide={storySlide}
-        size={{ width: "350px", height: "711px" }}
-        onNextStoryClick={() => {
-          incrementStory()
-          onReset()
-        }}
-        onPrevStoryClick={() => {
-          decrementStory()
-          onReset()
-        }}
-        onSourceLoaded={_onSourceLoad}
-        onSetPause={onPause}
-        onPlayStory={onResume}
-        header={
-          <StoriesHeader
-            progress={calcProgress(tick, duration)}
-            storiesCount={yepyStories.length}
-            currentStoryIndex={index}
-            onClose={() => {}}
-          />
-        }
-        bottomBar={<UserStatsBottomBar isDisliked isLiked isFavorite={false} />}
-      />
+      <Stories stories={yepyStories} />
     </div>
   )
 }

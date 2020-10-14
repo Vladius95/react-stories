@@ -1,9 +1,8 @@
 import * as ReactDOM from "react-dom"
 import * as React from "react"
-
-import { CustomStory } from "./Page"
+import { DefaultStoriesFeed } from "./templates/DefaultStoryFeed"
 
 ReactDOM.render(
-  React.createElement(CustomStory),
+  React.createElement(DefaultStoriesFeed),
   document.getElementById("page-root")
 )
