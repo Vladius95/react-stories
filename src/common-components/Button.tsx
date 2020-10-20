@@ -1,9 +1,11 @@
 import * as React from "react"
 
-const defaultStyle = {
-  border: "none",
+const defaultStyle: React.CSSProperties = {
+  border: 0,
   backgroundColor: "transparent",
   padding: 0,
+  appearance: "none",
+  cursor: "pointer",
 }
 
 // export interface BottomProps extends React.DetailedHTMLProps<React.ButtonHTMLAttributes<HTMLButtonElement>, HTMLButtonElement>{}

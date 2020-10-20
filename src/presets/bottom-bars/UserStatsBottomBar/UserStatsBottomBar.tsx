@@ -2,24 +2,26 @@ import * as React from "react"
 import { Button } from "src/common-components/Button"
 import { UserStatsBottomBarStyles } from "./UserStatsBottomBar.styles"
 
-export interface StoriesBottomBarProps {
+export interface UserStats {
   isLiked: boolean
   isDisliked: boolean
   isFavorite: boolean
-  onStatsChange?: VoidFunction
-  onLike?: VoidFunction
-  onDislike?: VoidFunction
-  onFavorite?: VoidFunction
+}
+
+export interface StoriesBottomBarProps {
+  userStats: UserStats
+  onLikeClick?: VoidFunction
+  onDislikeClick?: VoidFunction
+  onFavoriteClick?: VoidFunction
 }
 
 export function UserStatsBottomBar({
-  isLiked,
-  isDisliked,
-  isFavorite,
-  onLike,
-  onDislike,
-  onFavorite,
+  userStats,
+  onLikeClick,
+  onDislikeClick,
+  onFavoriteClick,
 }: StoriesBottomBarProps) {
+  const { isLiked, isDisliked, isFavorite } = userStats
   return (
     <section style={UserStatsBottomBarStyles["user-stats-bottom-bar"]}>
       <div>
@@ -28,7 +30,7 @@ export function UserStatsBottomBar({
             marginRight: "12px",
             opacity: isLiked ? 1 : 0.7,
           }}
-          onClick={onLike}
+          onClick={onLikeClick}
         >
           <Like />
         </Button>
@@ -37,14 +39,14 @@ export function UserStatsBottomBar({
             transform: "rotate(180deg)",
             opacity: isDisliked ? 1 : 0.7,
           }}
-          onClick={onDislike}
+          onClick={onDislikeClick}
         >
           <Like />
         </Button>
       </div>
 
       <Button
-        onClick={onFavorite}
+        onClick={onFavoriteClick}
         style={{
           opacity: isFavorite ? 1 : 0.7,
         }}

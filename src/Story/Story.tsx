@@ -1,16 +1,32 @@
-import * as React from "react"
-import { useStoryProgress } from "src/hooks/useStoryProgress"
-import { UserStatsBottomBar } from "src/presets/bottom-bars/UserStatsBottomBar/UserStatsBottomBar"
-import { StoriesHeader } from "src/presets/headers/ProgressBar/StoryHeader"
-import { StoryBody } from "src/fragments/StoryBody/StoryBody"
-import { useStoryControls } from "src/fragments/useStory"
-import { Story } from "src/@types/story"
+import * as React from "react";
+import { useStoryProgress } from "src/hooks/useStoryProgress";
+import {
+  StoriesBottomBarProps,
+  UserStats,
+  UserStatsBottomBar,
+} from "src/presets/bottom-bars/UserStatsBottomBar/UserStatsBottomBar";
+import { StoriesHeader } from "src/presets/headers/ProgressBar/StoryHeader";
+import { StoryBody } from "src/fragments/StoryBody/StoryBody";
+import { useStoryControls } from "src/fragments/useStory";
+import { ReactStory } from "src/@types/story";
 
-export interface StoriesProps {
-  stories: Story[]
+export interface StoryProps extends StoriesBottomBarProps {
+  story: ReactStory[];
+  onStoriesEnd?: VoidFunction;
+  onStoriesRepeat?: VoidFunction;
+  // TODO index
+  onClose?(): void;
+  style?: React.CSSProperties;
 }
 
-export function Stories({ stories }: StoriesProps) {
+export function Story({
+  story,
+  onStoriesEnd,
+  onStoriesRepeat,
+  userStats,
+  onClose,
+  style,
+}: StoryProps) {
   const {
     storySlide,
     index,
@@ -19,44 +35,46 @@ export function Stories({ stories }: StoriesProps) {
     onNextStory,
     onPrevStory,
   } = useStoryControls({
-    stories: stories,
+    stories: story,
     startIndex: 0,
-  })
+    onStoriesEnd,
+    onStoriesRepeat,
+  });
   //const autostart = React.useRef(storySlide.value.autostart || true);
-  const [duration, setDuration] = React.useState(storySlide.duration || 0)
+  const [duration, setDuration] = React.useState(storySlide.duration || 0);
 
   const { progress, onStart, onPause, onResume, onReset } = useStoryProgress({
     time: duration,
     onEnd: () => {
-      onReset()
+      onReset();
       // _onStoryEnd();
-      incrementStory()
+      incrementStory();
     },
     interval: 100,
-  })
+  });
 
   const _onSourceLoad = React.useCallback(
     time => {
-      time && setDuration(time)
-      const dur = time || duration
+      time && setDuration(time);
+      const dur = time || duration;
 
       // если есть время начинает отсчет
-      // dur !== 0 && onStart()
+      dur !== 0 && onStart();
     },
-    [duration]
-  )
+    [duration, onStart]
+  );
 
   return (
     <StoryBody
       storySlide={storySlide}
       size={{ width: "350px", height: "711px" }}
       onNextStoryClick={() => {
-        incrementStory()
-        onReset()
+        incrementStory();
+        onReset();
       }}
       onPrevStoryClick={() => {
-        decrementStory()
-        onReset()
+        decrementStory();
+        onReset();
       }}
       onSourceLoaded={_onSourceLoad}
       onSetPause={onPause}
@@ -64,12 +82,13 @@ export function Stories({ stories }: StoriesProps) {
       header={
         <StoriesHeader
           progress={progress}
-          storiesCount={stories.length}
+          storiesCount={story.length}
           currentStoryIndex={index}
-          onClose={() => {}}
+          onClose={onClose}
         />
       }
-      bottomBar={<UserStatsBottomBar isDisliked isLiked isFavorite={false} />}
+      bottomBar={<UserStatsBottomBar userStats={userStats} />}
+      style={style}
     />
-  )
+  );
 }

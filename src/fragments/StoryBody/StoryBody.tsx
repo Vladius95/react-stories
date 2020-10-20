@@ -5,7 +5,7 @@ import { useEventListener } from "src/hooks/useEventListener"
 import { useWindowVisibilityChange } from "src/hooks/useWindowVisibility"
 import { StoriesControls } from "../StoryControls/StoryControls"
 import { StoryBodyStyles } from "./StoryBody.styles"
-import { Story } from "src/@types/story"
+import { ReactStory } from "src/@types/story"
 
 const WithRemountStory = withRemountOnChange<StoryContentProps, StoryContent>(
   StoryContent,
@@ -27,9 +27,9 @@ export type StoryState = "loading" | "pause" | "playing"
 //   onRefreshStory: VoidFunction;
 // }
 
-export interface StoryProps {
-  storySlide: Story
-  onStoryStart?(story: Story): void
+export interface StoryBodyProps {
+  storySlide: ReactStory
+  onStoryStart?(story: ReactStory): void
   // вызывается, когда на первой стори, была нажата кнопка "предыдущая стори"
   onNextStoryClick: VoidFunction
   onPrevStoryClick: VoidFunction
@@ -44,6 +44,7 @@ export interface StoryProps {
   onPlayStory: VoidFunction
   onSetPause: VoidFunction
   onSourceLoaded?: (time?: number) => void
+  style?: React.CSSProperties
 }
 
 export function StoryBody({
@@ -58,7 +59,8 @@ export function StoryBody({
   classNameContainer,
   header,
   bottomBar,
-}: StoryProps) {
+  style,
+}: StoryBodyProps) {
   const storyRef = React.useRef<StoryContent>(null)
 
   useEventListener("waiting", onSetPause, storyRef.current?.videoNode?.current)
@@ -117,7 +119,7 @@ export function StoryBody({
   return (
     <article
       className={classNameContainer}
-      style={{ ...StoryBodyStyles["story"], ...size }}
+      style={{ ...StoryBodyStyles["story"], ...size, ...style }}
     >
       {header && (
         <header style={StoryBodyStyles["story__header"]}>{header}</header>

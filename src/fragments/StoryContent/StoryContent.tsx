@@ -1,12 +1,12 @@
 import * as React from "react"
-import { Story } from "src/@types/story"
+import { ReactStory } from "src/@types/story"
 import { StoryContentStyles } from "./StoryContent.styles"
 
 // хранилище под загруженные картинки в историях
 // хранятся всю сессию
 let imagePool: HTMLImageElement[] = []
 
-export interface StoryContentProps extends Story {
+export interface StoryContentProps extends ReactStory {
   // time only for video
   onSourceLoad(time?: number): void
 }

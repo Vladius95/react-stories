@@ -1,6 +1,6 @@
 import * as React from "react"
 import { StoryFeed } from "src/StoryFeed/StoryFeed"
-import { defaultStoryFeedConfig } from "./default-story-feed.config"
+import { testConfig } from "./test-config"
 
 export function DefaultStoriesFeed() {
   return (
@@ -8,7 +8,7 @@ export function DefaultStoriesFeed() {
       style={{ display: "flex", flexDirection: "column", alignItems: "center" }}
     >
       <h1>Stories Preview Feed</h1>
-      <StoryFeed stories={defaultStoryFeedConfig} />
+      <StoryFeed stories={testConfig} />
     </div>
   )
 }
