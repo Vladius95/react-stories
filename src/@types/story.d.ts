@@ -10,11 +10,12 @@ export type ReactStory = {
 };
 
 export type ReactStories = {
-  id: number | string;
+  id?: number | string;
   isViewed?: boolean;
   frameStroke?: string;
   backgroundColor?: string;
   backgroundImage?: string;
+  title?: string;
   theme?: "white" | "dark";
   stories: ReactStory[];
 };

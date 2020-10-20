@@ -4,30 +4,36 @@ import { Button } from "src/common-components/Button";
 import { StoryPreviewFrame } from "./fragments/StoryPreviewFrame/StoryPreviewFrame";
 import { StoryPreviewStyles } from "./StoryPreview.styles";
 
-export interface StoryPreviewProps extends ReactStories {
+export interface StoryPreviewProps {
+  story: ReactStories;
   style?: React.CSSProperties;
-  onClick?(id: string | number): void;
+  onClick?(story: ReactStories): void;
   className?: string;
   side?: number;
 }
 
 export function StoryPreview({
-  id,
+  story,
   onClick,
-  isViewed = false,
   className = "",
   style,
   side = 88,
-  frameStroke,
-  backgroundImage = "",
-  backgroundColor = "",
-  stories,
-  theme = "white",
   children,
 }: React.PropsWithChildren<StoryPreviewProps>) {
+  const {
+    id,
+    frameStroke,
+    isViewed,
+    backgroundColor,
+    backgroundImage,
+    title,
+    theme,
+    stories,
+  } = story;
+
   const _onClick = React.useCallback(() => {
-    onClick(id);
-  }, []);
+    onClick(story);
+  }, [story, onClick]);
 
   return (
     <Button
@@ -36,14 +42,29 @@ export function StoryPreview({
       style={{
         width: side,
         height: side,
-        background: `${backgroundColor} url(${backgroundImage}) no-repeat 100% center`,
+        background: getStoryPreviewBackground(backgroundColor, backgroundImage),
         ...StoryPreviewStyles["story-preview"],
         ...style,
         color: theme === "white" ? "white" : "black",
       }}
     >
       {!isViewed && <StoryPreviewFrame side={side} stroke={frameStroke} />}
-      {children}
+      {!children && title ? (
+        <p style={StoryPreviewStyles["story-preview__text"]}>{title}</p>
+      ) : (
+        children
+      )}
     </Button>
   );
+}
+
+function getStoryPreviewBackground(
+  backgroundColor?: string,
+  backgroundImage?: string
+) {
+  if (!backgroundColor && !backgroundImage) return;
+
+  return `${backgroundColor} ${
+    backgroundImage ? `url(${backgroundImage}) no-repeat 100% center` : ""
+  }`;
 }

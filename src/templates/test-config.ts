@@ -3,12 +3,12 @@ import { ReactStories } from "src/@types/story";
 export const testConfig: ReactStories[] = [
   {
     id: 0,
-    // title: "Story with title and img",
+    //title: "Story with title and img",
     frameStroke: "#4B246A",
     // side: 88,
     backgroundColor: "#4B246A",
-    backgroundImage:
-      "https://images.unsplash.com/photo-1602395714441-e4a5686cbb59?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=634&q=80",
+    // backgroundImage:
+    //   "https://images.unsplash.com/photo-1602395714441-e4a5686cbb59?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=634&q=80",
 
     stories: [
       {
@@ -33,7 +33,7 @@ export const testConfig: ReactStories[] = [
   },
   {
     id: 1,
-    // title: "Another text, id",
+    title: "Another text, id",
     // style: {
     //   color: "white",
     // },
@@ -65,7 +65,7 @@ export const testConfig: ReactStories[] = [
   },
   {
     id: 2,
-    // title: "Weekly expenses",
+    title: "Weekly expenses",
     // style: {
     //   color: "white",
     // },
@@ -95,7 +95,7 @@ export const testConfig: ReactStories[] = [
   },
   {
     id: 3,
-    // title: "Weekly expenses",
+    title: "Weekly expenses",
     // style: {
     //   color: "white",
     // },

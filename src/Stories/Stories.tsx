@@ -32,15 +32,14 @@ export function Stories({
   }, []);
 
   const onStorySet = React.useCallback(
-    (id: string | number) => {
-      const s = storyList.find(v => v.id === id);
+    (story: ReactStories) => {
+      const s = storyList.find(v => v === story);
       setActiveStory(s);
     },
     [storyList]
   );
 
   const onNextStories = React.useCallback(() => {
-    console.log(activeStory.next);
     setActiveStory(activeStory.next);
   }, [activeStory]);
 

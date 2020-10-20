@@ -1,4 +1,4 @@
-import { ComponentStyle } from "src/@types/style"
+import { ComponentStyle } from "src/@types/style";
 
 export const StoryPreviewStyles: ComponentStyle<
   "story-preview" | "story-preview__text"
@@ -10,8 +10,9 @@ export const StoryPreviewStyles: ComponentStyle<
     margin: "4px",
   },
   "story-preview__text": {
-    padding: "8px",
+    padding: "4px",
+    margin: 0,
     overflow: "hidden",
     textOverflow: "ellipsis",
   },
-}
+};
