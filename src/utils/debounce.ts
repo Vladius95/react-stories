@@ -1,4 +1,4 @@
-export function debounce(callback: Function, time: number = 0) {
+export function debounce(callback: Function, time = 0) {
   let timeoutId: number;
   function debounced(...args) {
     window.clearTimeout(timeoutId);
@@ -17,7 +17,6 @@ export function debounce(callback: Function, time: number = 0) {
 function name() {
   if (Math.random()) {
     return true;
-  } else {
-    return false;
   }
+  return false;
 }

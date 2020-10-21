@@ -12,10 +12,14 @@ export interface ILinkedList<T> {
   clear(): void;
 }
 
-function increaseLength(target, key: string | symbol, descriptor: PropertyDescriptor) {
+function increaseLength(
+  target,
+  key: string | symbol,
+  descriptor: PropertyDescriptor
+) {
   const originalMethod = descriptor.value;
 
-  descriptor.value = function (...args) {
+  descriptor.value = function(...args) {
     originalMethod.apply(this, args);
     return this.length++;
   };
@@ -23,10 +27,14 @@ function increaseLength(target, key: string | symbol, descriptor: PropertyDescri
   return descriptor;
 }
 
-function decreaseLength(target, key: string | symbol, descriptor: PropertyDescriptor) {
+function decreaseLength(
+  target,
+  key: string | symbol,
+  descriptor: PropertyDescriptor
+) {
   const originalMethod = descriptor.value;
 
-  descriptor.value = function (...args) {
+  descriptor.value = function(...args) {
     const res = originalMethod.apply(this, args);
     this.length--;
     return res;
@@ -36,7 +44,11 @@ function decreaseLength(target, key: string | symbol, descriptor: PropertyDescri
 }
 
 export class LinkedList<T> implements ILinkedList<T> {
-  constructor(initial: T[] = [], public head: LinkedListNode<T> | null = null, public length: number = 0) {
+  constructor(
+    initial: T[] = [],
+    public head: LinkedListNode<T> | null = null,
+    public length: number = 0
+  ) {
     if (initial.length) {
       initial.forEach(this.push);
     }

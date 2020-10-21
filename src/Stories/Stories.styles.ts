@@ -1,6 +1,6 @@
-import { ComponentStyle } from "src/@types/style"
+import { ComponentStyle } from "src/@types/style";
 
-export const StoriesStyles: ComponentStyle<"story-header"> = {
+export const StoriesStyles: ComponentStyle<"stories__layout" | "stories"> = {
   stories__layout: {
     position: "absolute",
     top: 0,
@@ -16,4 +16,4 @@ export const StoriesStyles: ComponentStyle<"story-header"> = {
     right: "50%",
     transform: "translate(50%, -50%)",
   },
-}
+};

@@ -1,20 +1,20 @@
-import * as React from "react"
-import { withRemountOnChange } from "src/hoc/WithRemountOnChange"
-import { StoryContent, StoryContentProps } from "../StoryContent/StoryContent"
-import { useEventListener } from "src/hooks/useEventListener"
-import { useWindowVisibilityChange } from "src/hooks/useWindowVisibility"
-import { StoriesControls } from "../StoryControls/StoryControls"
-import { StoryBodyStyles } from "./StoryBody.styles"
-import { ReactStory } from "src/@types/story"
+import * as React from "react";
+import { withRemountOnChange } from "src/hoc/WithRemountOnChange";
+import { StoryContent, StoryContentProps } from "../StoryContent/StoryContent";
+import { useEventListener } from "src/hooks/useEventListener";
+import { useWindowVisibilityChange } from "src/hooks/useWindowVisibility";
+import { StoriesControls } from "../StoryControls/StoryControls";
+import { StoryBodyStyles } from "./StoryBody.styles";
+import { ReactStory } from "src/@types/story";
 
 const WithRemountStory = withRemountOnChange<StoryContentProps, StoryContent>(
   StoryContent,
   (props, prevProps) =>
     props.media.url !== prevProps.media.url ||
     props.component?.toString() !== prevProps.component?.toString()
-)
+);
 
-export type StoryState = "loading" | "pause" | "playing"
+export type StoryState = "loading" | "pause" | "playing";
 
 // внешнее апи
 // export interface StoriesCarouselForwardRef {
@@ -28,28 +28,26 @@ export type StoryState = "loading" | "pause" | "playing"
 // }
 
 export interface StoryBodyProps {
-  storySlide: ReactStory
-  onStoryStart?(story: ReactStory): void
+  storySlide: ReactStory;
   // вызывается, когда на первой стори, была нажата кнопка "предыдущая стори"
-  onNextStoryClick: VoidFunction
-  onPrevStoryClick: VoidFunction
-  onStoryEnd?: VoidFunction
-  classNameContainer?: string
+  onNextStoryClick: VoidFunction;
+  onPrevStoryClick: VoidFunction;
+  onStoryEnd?: VoidFunction;
+  classNameContainer?: string;
   size?: {
-    width: string
-    height: string
-  }
-  header?: React.ReactNode
-  bottomBar?: React.ReactNode
-  onPlayStory: VoidFunction
-  onSetPause: VoidFunction
-  onSourceLoaded?: (time?: number) => void
-  style?: React.CSSProperties
+    width: string;
+    height: string;
+  };
+  header?: React.ReactNode;
+  bottomBar?: React.ReactNode;
+  onPlayStory?: VoidFunction;
+  onSetPause?: VoidFunction;
+  onSourceLoaded?: (time?: number) => void;
+  style?: React.CSSProperties;
 }
 
 export function StoryBody({
   storySlide,
-  onStoryStart,
   onNextStoryClick,
   onPrevStoryClick,
   onSourceLoaded,
@@ -61,32 +59,36 @@ export function StoryBody({
   bottomBar,
   style,
 }: StoryBodyProps) {
-  const storyRef = React.useRef<StoryContent>(null)
+  const storyRef = React.useRef<StoryContent>(null);
 
-  useEventListener("waiting", onSetPause, storyRef.current?.videoNode?.current)
-  useEventListener("playing", onPlayStory, storyRef.current?.videoNode?.current)
+  useEventListener("waiting", onSetPause, storyRef.current?.videoNode?.current);
+  useEventListener(
+    "playing",
+    onPlayStory,
+    storyRef.current?.videoNode?.current
+  );
 
   const onWindowFocus = React.useCallback(() => {
-    onPlayStory()
-    storyRef.current?.videoNode?.current?.play()
-  }, [onPlayStory])
+    onPlayStory();
+    storyRef.current?.videoNode?.current?.play();
+  }, [onPlayStory]);
 
   const onWindowBlur = React.useCallback(() => {
-    onSetPause()
-    storyRef.current?.videoNode?.current?.pause()
-  }, [onSetPause])
+    onSetPause();
+    storyRef.current?.videoNode?.current?.pause();
+  }, [onSetPause]);
 
-  useWindowVisibilityChange(onWindowFocus, onWindowBlur)
+  useWindowVisibilityChange(onWindowFocus, onWindowBlur);
 
   const _onSetPause = React.useCallback(() => {
-    onSetPause()
-    storyRef.current?.videoNode?.current?.pause()
-  }, [onSetPause])
+    onSetPause();
+    storyRef.current?.videoNode?.current?.pause();
+  }, [onSetPause]);
 
   const _onPlayStory = React.useCallback(() => {
-    onPlayStory()
-    storyRef.current?.videoNode?.current?.play()
-  }, [onPlayStory])
+    onPlayStory();
+    storyRef.current?.videoNode?.current?.play();
+  }, [onPlayStory]);
 
   // const onRefreshStory = React.useCallback(() => {
   //   onReset();
@@ -109,12 +111,12 @@ export function StoryBody({
   // единственный колбэк, который начинает отсчет
   const _onSourceLoaded = React.useCallback(
     (time?: number) => {
-      storyRef.current?.videoNode?.current?.play()
+      storyRef.current?.videoNode?.current?.play();
 
-      onSourceLoaded(time)
+      onSourceLoaded(time);
     },
     [onSourceLoaded]
-  )
+  );
 
   return (
     <article
@@ -142,7 +144,7 @@ export function StoryBody({
         <footer style={StoryBodyStyles["story__footer"]}>{bottomBar}</footer>
       )}
     </article>
-  )
+  );
 }
 
 // export const ForwardedRefStoriesCorousel = React.forwardRef<StoriesCarouselForwardRef, StoriesCarouselProps>(

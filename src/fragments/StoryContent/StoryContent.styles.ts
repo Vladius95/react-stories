@@ -1,6 +1,12 @@
 import { ComponentStyle } from "src/@types/style";
 
-export const StoryContentStyles: ComponentStyle<"story-content"> = {
+export const StoryContentStyles: ComponentStyle<
+  | "story-content"
+  | "story-content__image"
+  | "story-content__video"
+  | "story-content__media-wrapper"
+  | "story-content__media-wrapper--loading"
+> = {
   "story-content": {
     position: "relative",
 
@@ -37,7 +43,6 @@ export const StoryContentStyles: ComponentStyle<"story-content"> = {
     maxWidth: "100%",
     height: "100%",
   },
-
   "story-content__media-wrapper--loading": {
     display: "none",
   },

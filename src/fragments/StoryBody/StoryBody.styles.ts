@@ -1,6 +1,8 @@
-import { ComponentStyle } from "src/@types/style"
+import { ComponentStyle } from "src/@types/style";
 
-export const StoryBodyStyles: ComponentStyle<"story"> = {
+export const StoryBodyStyles: ComponentStyle<
+  "story" | "story__header" | "story__footer"
+> = {
   story: {
     position: "relative",
     overflow: "hidden",
@@ -23,4 +25,4 @@ export const StoryBodyStyles: ComponentStyle<"story"> = {
     left: 0,
     right: 0,
   },
-}
+};

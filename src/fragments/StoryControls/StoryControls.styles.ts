@@ -1,6 +1,8 @@
 import { ComponentStyle } from "src/@types/style";
 
-export const StoryControlsStyles: ComponentStyle<"story-controls"> = {
+export const StoryControlsStyles: ComponentStyle<
+  "story-controls" | "story-controls__control"
+> = {
   "story-controls": {
     position: "absolute",
     top: 0,
@@ -23,4 +25,3 @@ export const StoryControlsStyles: ComponentStyle<"story-controls"> = {
     WebkitAppearance: "none",
   },
 };
-
