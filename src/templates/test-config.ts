@@ -9,7 +9,7 @@ export const testConfig: ReactStories[] = [
     backgroundColor: "#4B246A",
     // backgroundImage:
     //   "https://images.unsplash.com/photo-1602395714441-e4a5686cbb59?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=634&q=80",
-
+    theme: "white",
     stories: [
       {
         id: 0,
@@ -39,6 +39,7 @@ export const testConfig: ReactStories[] = [
     // },
     frameStroke: "#BB60C3",
     //side: 88,
+    theme: "white",
     backgroundColor: "#BB60C3",
     backgroundImage:
       "https://images.unsplash.com/photo-1602409049594-25f0d27dc2cd?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=500&q=60",

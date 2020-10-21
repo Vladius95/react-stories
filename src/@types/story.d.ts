@@ -3,6 +3,7 @@ export type ReactStory = {
   media?: {
     url: string;
     mediaType: "image" | "video";
+    backgroundColor?: string;
   };
   component?: React.ReactNode;
   duration?: number;

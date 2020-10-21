@@ -1,37 +1,35 @@
-import * as React from "react"
-import { ReactStory } from "src/@types/story"
-import { StoryContentStyles } from "./StoryContent.styles"
+import * as React from "react";
+import { ReactStory } from "src/@types/story";
+import { Loader } from "src/common-components/Loader";
+import { StoryContentStyles } from "./StoryContent.styles";
 
 // хранилище под загруженные картинки в историях
 // хранятся всю сессию
-let imagePool: HTMLImageElement[] = []
+let imagePool: HTMLImageElement[] = [];
 
 export interface StoryContentProps extends ReactStory {
-  // time only for video
-  onSourceLoad(time?: number): void
+  // time only for video (ms)
+  onSourceLoad(time?: number): void;
 }
 
 interface StoryContentState {
-  isLoading: boolean
+  isLoading: boolean;
 }
 
 export class StoryContent extends React.Component<
   StoryContentProps,
   StoryContentState
 > {
-  imgNode = React.createRef<HTMLImageElement>()
-  videoNode = React.createRef<HTMLVideoElement>()
+  imgNode = React.createRef<HTMLImageElement>();
+  videoNode = React.createRef<HTMLVideoElement>();
 
   private _media = {
     image: (src: string) => (
       <img
         ref={this.imgNode}
-        alt="The image of the story"
+        alt="Story Media Content"
         src={src}
-        onLoad={() => {
-          this.setState({ isLoading: false })
-          this.props.onSourceLoad()
-        }}
+        onLoad={this._onImageLoad}
         style={StoryContentStyles["story-content__image"]}
       />
     ),
@@ -46,43 +44,40 @@ export class StoryContent extends React.Component<
         style={StoryContentStyles["story-content__video"]}
       />
     ),
-  }
+  };
 
   constructor(props: StoryContentProps) {
-    super(props)
+    super(props);
 
-    const { url, mediaType } = props.media
+    const { url, mediaType } = props.media;
 
-    let isLoading = true
+    let isLoading = true;
 
-    // TODO Вернуть и довести до ума
     // это картинка и нужно проверить, грузилась ли она уже
-    // if (mediaType === "image") {
-    //   const isImagesLoaded = mediaType === "image" && imagePool.findIndex((i) => i.src === url) !== -1;
+    if (mediaType === "image") {
+      const isImageLoaded =
+        mediaType === "image" && imagePool.findIndex(i => i.src === url) !== -1;
 
-    //   if (!isImagesLoaded) {
-    //     const img = new Image();
-    //     img.src = url;
-    //     img.onload = () => {
-    //       imagePool.push(img);
-    //       this.props.onSourceLoad();
-    //       this.setState({ isLoading: false });
-    //     };
-    //     imagePool.push(img);
-    //   } else {
-    //     isLoading = false;
-    //     this.props.onSourceLoad();
-    //   }
-    // }
+      if (!isImageLoaded) {
+        this._pushImage(url);
+      } else {
+        isLoading = false;
+      }
+    }
 
     this.state = {
       isLoading,
-    }
+    };
   }
 
   render() {
     return (
-      <section className="story" style={StoryContentStyles["story-content"]}>
+      <section
+        style={{
+          ...StoryContentStyles["story-content"],
+          backgroundColor: this.props.media.backgroundColor || "#303030",
+        }}
+      >
         <div
           style={{
             ...StoryContentStyles["story-content__media-wrapper"],
@@ -92,23 +87,37 @@ export class StoryContent extends React.Component<
         >
           {this.renderMedia()}
         </div>
-        {this.state.isLoading && <div>Loader...</div>}
+        {this.state.isLoading && <Loader />}
         {!this.state.isLoading && this.props.component}
       </section>
-    )
+    );
   }
 
   renderMedia() {
-    const { url, mediaType } = this.props.media
+    const { url, mediaType } = this.props.media;
 
-    return this._media[mediaType](url)
+    return this._media[mediaType](url);
   }
 
   private _onVideoLoad = (
     event: React.SyntheticEvent<HTMLVideoElement, Event>
   ) => {
-    this.setState({ isLoading: false })
-    this.props.onSourceLoad(this.videoNode.current.duration * 1000)
-    console.log(this.videoNode.current.duration)
-  }
+    this.setState({ isLoading: false });
+    this.props.onSourceLoad(this.videoNode.current.duration * 1000);
+  };
+
+  private _onImageLoad = () => {
+    this.setState({ isLoading: false });
+    this.props.onSourceLoad();
+  };
+
+  private _pushImage = (url: string) => {
+    const img = new Image();
+    img.src = url;
+    img.onload = () => {
+      imagePool.push(img);
+      this.props.onSourceLoad();
+      this.setState({ isLoading: false });
+    };
+  };
 }
