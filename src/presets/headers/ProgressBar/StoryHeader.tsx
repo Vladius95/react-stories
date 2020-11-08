@@ -1,12 +1,13 @@
-import * as React from "react"
-import { StoryProgress } from "../StoryProgress/StoryProgress"
-import { StoryHeaderStyles } from "./StoryHeader.styles"
+import * as React from "react";
+import { Button } from "src/common-components/Button";
+import { StoryProgress } from "../StoryProgress/StoryProgress";
+import { StoryHeaderStyles } from "./StoryHeader.styles";
 
 export interface StoriesHeaderProps {
-  storiesCount: number
-  currentStoryIndex: number
-  progress: number
-  onClose: VoidFunction
+  storiesCount: number;
+  currentStoryIndex: number;
+  progress: number;
+  onClose: VoidFunction;
 }
 
 export function StoriesHeader({
@@ -17,11 +18,11 @@ export function StoriesHeader({
 }: StoriesHeaderProps) {
   const _onClose = React.useCallback(
     (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
-      e.preventDefault()
-      onClose()
+      e.preventDefault();
+      onClose();
     },
     [onClose]
-  )
+  );
 
   return (
     <div style={StoryHeaderStyles["stories-header"]}>
@@ -30,14 +31,14 @@ export function StoriesHeader({
         storiesCount={storiesCount}
         progress={progress}
       />
-      <button
+      <Button
         onClick={_onClose}
         style={StoryHeaderStyles["story-header__close-btn"]}
       >
         <Close />
-      </button>
+      </Button>
     </div>
-  )
+  );
 }
 
 function Close() {
@@ -51,5 +52,5 @@ function Close() {
         stroke="white"
       />
     </svg>
-  )
+  );
 }

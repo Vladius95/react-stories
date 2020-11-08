@@ -6,6 +6,9 @@ import { useWindowVisibilityChange } from "src/hooks/useWindowVisibility";
 import { StoriesControls } from "../StoryControls/StoryControls";
 import { StoryBodyStyles } from "./StoryBody.styles";
 import { ReactStory } from "src/@types/story";
+import { useStoryControls } from "src/fragments/useStory";
+import { useStoryProgress } from "src/hooks/useStoryProgress";
+import { StoriesHeader } from "src/presets/headers/ProgressBar/StoryHeader";
 
 const WithRemountStory = withRemountOnChange<StoryContentProps, StoryContent>(
   StoryContent,
@@ -28,38 +31,86 @@ export type StoryState = "loading" | "pause" | "playing";
 // }
 
 export interface StoryBodyProps {
-  storySlide: ReactStory;
-  // вызывается, когда на первой стори, была нажата кнопка "предыдущая стори"
-  onNextStoryClick: VoidFunction;
-  onPrevStoryClick: VoidFunction;
+  stories: ReactStory[];
   onStoryEnd?: VoidFunction;
   classNameContainer?: string;
   size?: {
     width: string;
     height: string;
   };
-  header?: React.ReactNode;
   bottomBar?: React.ReactNode;
+  onStoriesEnd?: VoidFunction;
+  // вызывается, когда на первой стори, была нажата кнопка "предыдущая стори"
+  onStoriesRepeat?: VoidFunction;
   onPlayStory?: VoidFunction;
   onSetPause?: VoidFunction;
   onSourceLoaded?: (time?: number) => void;
+  onClose?: VoidFunction;
   style?: React.CSSProperties;
 }
 
 export function StoryBody({
-  storySlide,
-  onNextStoryClick,
-  onPrevStoryClick,
+  stories,
   onSourceLoaded,
   onSetPause,
   onPlayStory,
-  size,
+  onStoriesEnd,
+  onStoriesRepeat,
+  size = { width: "350px", height: "711px" },
   classNameContainer,
-  header,
   bottomBar,
+  onClose,
   style,
 }: StoryBodyProps) {
   const storyRef = React.useRef<StoryContent>(null);
+
+  const {
+    storySlide,
+    index,
+    incrementStory,
+    decrementStory,
+    onNextStory,
+    onPrevStory,
+  } = useStoryControls({
+    stories,
+    startIndex: 0,
+    onStoriesRepeat,
+    onStoriesEnd,
+  });
+
+  const [duration, setDuration] = React.useState(storySlide.duration || 0);
+
+  const { progress, onStart, onPause, onResume, onReset } = useStoryProgress({
+    time: duration,
+    onEnd: () => {
+      onReset();
+      // _onStoryEnd();
+      incrementStory();
+    },
+    interval: 100,
+  });
+
+  const onNextStoryClick = React.useCallback(() => {
+    incrementStory();
+    onReset();
+  }, [incrementStory, onReset]);
+
+  const onPrevStoryClick = React.useCallback(() => {
+    decrementStory();
+    onReset();
+  }, [decrementStory, onReset]);
+
+  const _onSourceLoad = React.useCallback(
+    time => {
+      time && setDuration(time);
+      const dur = time || duration;
+
+      // если есть время начинает отсчет
+      dur !== 0 && onStart();
+      storyRef.current?.videoNode?.current?.play();
+    },
+    [duration, onStart]
+  );
 
   useEventListener("waiting", onSetPause, storyRef.current?.videoNode?.current);
   useEventListener(
@@ -108,24 +159,19 @@ export function StoryBody({
   //   onRefreshStory,
   // }));
 
-  // единственный колбэк, который начинает отсчет
-  const _onSourceLoaded = React.useCallback(
-    (time?: number) => {
-      storyRef.current?.videoNode?.current?.play();
-
-      onSourceLoaded(time);
-    },
-    [onSourceLoaded]
-  );
-
   return (
     <article
       className={classNameContainer}
       style={{ ...StoryBodyStyles["story"], ...size, ...style }}
     >
-      {header && (
-        <header style={StoryBodyStyles["story__header"]}>{header}</header>
-      )}
+      <header style={StoryBodyStyles["story__header"]}>
+        <StoriesHeader
+          progress={progress}
+          storiesCount={stories.length}
+          currentStoryIndex={index}
+          onClose={onClose}
+        />
+      </header>
 
       <StoriesControls
         onNextStory={onNextStoryClick}
@@ -137,7 +183,7 @@ export function StoryBody({
       <WithRemountStory
         ref={storyRef}
         {...storySlide}
-        onSourceLoad={_onSourceLoaded}
+        onSourceLoad={_onSourceLoad}
       />
 
       {bottomBar && (

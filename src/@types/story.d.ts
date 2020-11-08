@@ -10,6 +10,8 @@ export type ReactStory = {
   autostart?: boolean;
 };
 
+export type ReactStoryTheme = "white" | "dark";
+
 export type ReactStories = {
   id?: number | string;
   isViewed?: boolean;
@@ -17,6 +19,6 @@ export type ReactStories = {
   backgroundColor?: string;
   backgroundImage?: string;
   title?: string;
-  theme?: "white" | "dark";
+  theme?: ReactStoryTheme;
   stories: ReactStory[];
 };

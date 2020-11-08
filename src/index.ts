@@ -1,9 +1,9 @@
-import * as ReactDOM from "react-dom"
-import * as React from "react"
-import { DefaultStoriesFeed } from "./templates/DefaultStoryFeed"
-import { FullStories } from "./templates/FullStories"
+import * as ReactDOM from "react-dom";
+import * as React from "react";
+import { DefaultStoriesFeed } from "./templates/DefaultStoryFeed";
+import { InstagramStories } from "./templates/InstagramStories";
 
 ReactDOM.render(
-  React.createElement(FullStories),
+  React.createElement(InstagramStories),
   document.getElementById("page-root")
-)
+);

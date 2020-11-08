@@ -1,18 +1,18 @@
-import * as React from "react"
-import { Button } from "src/common-components/Button"
-import { UserStatsBottomBarStyles } from "./UserStatsBottomBar.styles"
+import * as React from "react";
+import { Button } from "src/common-components/Button";
+import { UserStatsBottomBarStyles } from "./UserStatsBottomBar.styles";
 
 export interface UserStats {
-  isLiked: boolean
-  isDisliked: boolean
-  isFavorite: boolean
+  isLiked: boolean;
+  isDisliked: boolean;
+  isFavorite: boolean;
 }
 
 export interface StoriesBottomBarProps {
-  userStats: UserStats
-  onLikeClick?: VoidFunction
-  onDislikeClick?: VoidFunction
-  onFavoriteClick?: VoidFunction
+  userStats: UserStats;
+  onLikeClick?: VoidFunction;
+  onDislikeClick?: VoidFunction;
+  onFavoriteClick?: VoidFunction;
 }
 
 export function UserStatsBottomBar({
@@ -21,7 +21,7 @@ export function UserStatsBottomBar({
   onDislikeClick,
   onFavoriteClick,
 }: StoriesBottomBarProps) {
-  const { isLiked, isDisliked, isFavorite } = userStats
+  const { isLiked, isDisliked, isFavorite } = userStats;
   return (
     <section style={UserStatsBottomBarStyles["user-stats-bottom-bar"]}>
       <div>
@@ -54,7 +54,7 @@ export function UserStatsBottomBar({
         <Favorite />
       </Button>
     </section>
-  )
+  );
 }
 
 export function Like() {
@@ -75,7 +75,7 @@ export function Like() {
         transform="translate(5 .97)"
       />
     </svg>
-  )
+  );
 }
 
 export function Favorite() {
@@ -99,5 +99,5 @@ export function Favorite() {
 		c-0.5-2.2,0.2-4.4,1.9-5.9l26.3-23.1C128.615,51.212,126.415,44.712,121.215,44.212z"
       />
     </svg>
-  )
+  );
 }
