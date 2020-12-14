@@ -17,8 +17,12 @@ export function InstagramStories() {
     >
       <h1>Instagram Stories Example</h1>
       <Stories stories={testConfig} />
-      {/* <div style={{ width: "100%" }}>
-        <DirectMessage text={text} onChange={e => setText(e.target.value)} />
+      {/* <div style={{ width: "310px" }}>
+        <DirectMessage
+          text={text}
+          onSend={alert}
+          onChange={e => setText(e.target.value)}
+        />
       </div> */}
     </div>
   );

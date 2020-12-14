@@ -5,24 +5,16 @@ import { createPortal } from "react-dom";
 import { StoriesStyles } from "./Stories.styles";
 import { LinkedList, LinkedListNode } from "src/utils/linked-list";
 import { StoryBody } from "src/fragments/StoryBody/StoryBody";
-import { StoriesHeader } from "src/presets/headers/ProgressBar/StoryHeader";
+import { StoriesHeader } from "src/fragments/ProgressBar/StoryHeader";
 import { UserStatsBottomBar } from "src/presets/bottom-bars/UserStatsBottomBar/UserStatsBottomBar";
+import { DirectMessage } from "src/presets/bottom-bars/DirectMessage/DirectMessage";
 
 export interface StoriesProps {
   stories: ReactStories[];
-  // onLikeClick?: VoidFunction;
-  // onDislikeClick?: VoidFunction;
-  // onFavoriteClick?: VoidFunction;
   withLayout?: boolean;
 }
 
-export function Stories({
-  stories,
-  // onLikeClick,
-  // onDislikeClick,
-  // onFavoriteClick,
-  withLayout = true,
-}: StoriesProps) {
+export function Stories({ stories, withLayout = true }: StoriesProps) {
   const storyList = React.useMemo(() => new LinkedList(stories), [stories]);
 
   const [activeStory, setActiveStory] = React.useState<
@@ -41,13 +33,15 @@ export function Stories({
     [storyList]
   );
 
-  const onNextStories = React.useCallback(() => {
+  const _onNextStories = React.useCallback(() => {
     setActiveStory(activeStory.next);
   }, [activeStory]);
 
-  const onPrevStories = React.useCallback(() => {
+  const _onPrevStories = React.useCallback(() => {
     setActiveStory(activeStory.prev);
   }, [activeStory]);
+
+  const [text, setText] = React.useState("");
 
   return (
     <>
@@ -67,26 +61,13 @@ export function Stories({
               stories={activeStory.value.stories}
               onClose={closeActiveStory}
               style={StoriesStyles["stories"]}
-              // onLikeClick={onLikeClick}
-              // onDislikeClick={onDislikeClick}
-              // onFavoriteClick={onFavoriteClick}
-              onStoriesEnd={onNextStories}
-              onStoriesRepeat={onPrevStories}
-              // header={
-              //   <StoriesHeader
-              //     progress={progress}
-              //     storiesCount={story.length}
-              //     currentStoryIndex={index}
-              //     onClose={onClose}
-              //   />
-              // }
+              onStoriesEnd={_onNextStories}
+              onStoriesRepeat={_onPrevStories}
               bottomBar={
-                <UserStatsBottomBar
-                  userStats={{
-                    isDisliked: true,
-                    isLiked: false,
-                    isFavorite: false,
-                  }}
+                <DirectMessage
+                  text={text}
+                  onSend={alert}
+                  onChange={e => setText(e.target.value)}
                 />
               }
             />

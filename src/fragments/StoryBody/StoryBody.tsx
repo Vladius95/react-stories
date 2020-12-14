@@ -8,7 +8,7 @@ import { StoryBodyStyles } from "./StoryBody.styles";
 import { ReactStory } from "src/@types/story";
 import { useStoryControls } from "src/fragments/useStory";
 import { useStoryProgress } from "src/hooks/useStoryProgress";
-import { StoriesHeader } from "src/presets/headers/ProgressBar/StoryHeader";
+import { StoriesHeader } from "src/fragments/ProgressBar/StoryHeader";
 
 const WithRemountStory = withRemountOnChange<StoryContentProps, StoryContent>(
   StoryContent,
@@ -112,34 +112,31 @@ export function StoryBody({
     [duration, onStart]
   );
 
-  useEventListener("waiting", onSetPause, storyRef.current?.videoNode?.current);
-  useEventListener(
-    "playing",
-    onPlayStory,
-    storyRef.current?.videoNode?.current
-  );
-
-  const onWindowFocus = React.useCallback(() => {
-    onPlayStory();
-    storyRef.current?.videoNode?.current?.play();
-  }, [onPlayStory]);
-
-  const onWindowBlur = React.useCallback(() => {
-    onSetPause();
-    storyRef.current?.videoNode?.current?.pause();
-  }, [onSetPause]);
-
-  useWindowVisibilityChange(onWindowFocus, onWindowBlur);
-
-  const _onSetPause = React.useCallback(() => {
-    onSetPause();
-    storyRef.current?.videoNode?.current?.pause();
-  }, [onSetPause]);
-
   const _onPlayStory = React.useCallback(() => {
-    onPlayStory();
+    onResume();
+    onPlayStory && onPlayStory();
     storyRef.current?.videoNode?.current?.play();
-  }, [onPlayStory]);
+  }, [onPlayStory, onResume]);
+
+  const _onPauseStory = React.useCallback(() => {
+    onPause();
+    onSetPause && onSetPause();
+    storyRef.current?.videoNode?.current?.pause();
+  }, [onPause, onSetPause]);
+
+  useWindowVisibilityChange(_onPlayStory, _onPauseStory);
+
+  // TODO из-за "playing" не работает пауза на видосе
+  // useEventListener(
+  //   "waiting",
+  //   _onPauseStory,
+  //   storyRef.current?.videoNode?.current
+  // );
+  // useEventListener(
+  //   "playing",
+  //   _onPlayStory,
+  //   storyRef.current?.videoNode?.current
+  // );
 
   // const onRefreshStory = React.useCallback(() => {
   //   onReset();
@@ -176,7 +173,7 @@ export function StoryBody({
       <StoriesControls
         onNextStory={onNextStoryClick}
         onPrevStory={onPrevStoryClick}
-        onPause={_onSetPause}
+        onPause={_onPauseStory}
         onResume={_onPlayStory}
       />
 

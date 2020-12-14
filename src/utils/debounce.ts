@@ -13,10 +13,3 @@ export function debounce(callback: Function, time = 0) {
 
   return debounced;
 }
-
-function name() {
-  if (Math.random()) {
-    return true;
-  }
-  return false;
-}

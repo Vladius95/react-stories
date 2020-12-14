@@ -1,6 +1,6 @@
 import * as React from "react";
 import { Button } from "src/common-components/Button";
-import { StoryProgress } from "../StoryProgress/StoryProgress";
+import { StoryProgress } from "./StoryProgress/StoryProgress";
 import { StoryHeaderStyles } from "./StoryHeader.styles";
 
 export interface StoriesHeaderProps {

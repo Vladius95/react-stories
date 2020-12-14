@@ -20,14 +20,19 @@ export function DirectMessage({
   onSend,
   containerClassName,
 }: DirectMessageProps) {
-  const _onSend = React.useCallback(() => {
-    onSend(text);
-  }, [onSend, text]);
+  const _onSend = React.useCallback(
+    (e: React.FormEvent<HTMLFormElement>) => {
+      e.preventDefault();
+      onSend(text);
+    },
+    [onSend, text]
+  );
 
   return (
-    <div
+    <form
       style={DirectMessageStyles["direct-message"]}
       className={containerClassName}
+      onSubmit={_onSend}
     >
       <input
         value={text}
@@ -36,13 +41,13 @@ export function DirectMessage({
         onChange={onChange}
         style={DirectMessageStyles["direct-message__input"]}
       />
-      <MessageButton onClick={_onSend} />
-    </div>
+      <MessageButton />
+    </form>
   );
 }
 
 export interface MessageButtonProps {
-  onClick: (event: React.MouseEvent<HTMLButtonElement, MouseEvent>) => void;
+  onClick?: (event: React.MouseEvent<HTMLButtonElement, MouseEvent>) => void;
 }
 
 export function MessageButton({ onClick }: MessageButtonProps) {
@@ -56,6 +61,7 @@ export function MessageButton({ onClick }: MessageButtonProps) {
         viewBox="0 0 512 512"
         xmlns="http://www.w3.org/2000/svg"
         xmlnsXlink="http://www.w3.org/1999/xlink"
+        fill="white"
       >
         <path d="m507.606 4.394c-4.478-4.477-11.284-5.66-17.008-2.959l-482 227.442c-5.193 2.451-8.532 7.652-8.598 13.395s3.154 11.019 8.291 13.587l165.233 82.616 82.617 165.234c2.542 5.086 7.738 8.292 13.415 8.292.057 0 .114 0 .172-.001 5.742-.065 10.943-3.404 13.395-8.598l227.441-482c2.704-5.726 1.519-12.532-2.958-17.008zm-238.438 458.284-66.211-132.422 98.421-98.422c5.858-5.858 5.858-15.355 0-21.213-5.857-5.858-15.355-5.858-21.213 0l-98.421 98.421-132.422-66.21 416.273-196.426z" />
       </svg>
